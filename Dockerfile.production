@@ -1,0 +1,17 @@
+FROM node:16.13.2-alpine as builder
+
+WORKDIR /workspace
+COPY . .
+RUN yarn --frozen-lockfile && yarn build
+
+FROM node:16.13.2-alpine
+WORKDIR /workspace
+COPY --from=builder /workspace/.next ./.next
+COPY --from=builder /workspace/public ./public
+COPY package.json ./
+RUN yarn --frozen-lockfile --production --ignore-scripts && yarn cache clean
+
+ENV NODE_ENV production
+EXPOSE 3000
+
+CMD ["yarn", "start"]

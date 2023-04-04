@@ -1,0 +1,10 @@
+FROM node:16.13.2-alpine
+
+WORKDIR /workspace
+COPY . .
+RUN yarn --frozen-lockfile --production && yarn build
+
+ENV NODE_ENV production
+EXPOSE 3000
+
+CMD ["next", "start"]

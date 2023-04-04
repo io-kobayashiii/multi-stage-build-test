@@ -1,9 +1,11 @@
+# Must be standalone mode
+
 FROM node:16.13.2-alpine as builder
 
 WORKDIR /workspace
 COPY . .
-RUN yarn --frozen-lockfile && yarn build
-RUN cp -r -u .next/server .next/standalone/.next &&\
+RUN yarn --frozen-lockfile && yarn build &&\
+  cp -r -u .next/server .next/standalone/.next &&\
   cp -r -u .next/static .next/standalone/.next &&\
   cp -r -u public .next/standalone
 
